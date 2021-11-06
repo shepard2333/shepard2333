@@ -1,0 +1,41 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+# Copyrights©VATSIM ID 1434656, not for commercial use, For fight simulation only, do not use for actual flight
+print("Copyrights©VATSIM ID 1434656 and Hunter Wang, not for commercial use, For fight simulation only, do not use for actual flight")
+from typing import Text
+import requests
+from bs4 import BeautifulSoup
+from lxml import etree
+import parsel
+
+print("\n\nwelcome,欢迎\n\n")
+
+while (1):
+   
+    print('输入查询的航站,type in the station you want to check')
+    stationx= input()
+    print('checking for ' + stationx)
+
+    if __name__=="__main__":
+        kv = {'data?ids':'KIWA'}
+        r = requests.get("https://www.aviationweather.gov/metar/data?ids="+ stationx +"&format=decoded&date=&hours=0&taf=on", params=kv)
+        print('数据从NOAA获得''\ndata retrived from:NOAA\n')
+        #web spider from aviationweather.gov
+    #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+
+
+        url=("https://www.aviationweather.gov/metar/data?ids="+ stationx +"&format=decoded&date=&hours=0&taf=on")
+        response = requests.get(url)
+        response.encoding=response.apparent_encoding
+        html=BeautifulSoup(response.text, 'html.parser')
+
+        metar = html.select('#awc_main_content_wrap > table:nth-child(3)') 
+        #it is hard to get individual line, thus I get the whole thing
+
+        taf = html.select('#awc_main_content_wrap > table:nth-child(5)') 
+        #it is hard to get individual line, thus I get the whole thing
+        print(metar[0].get_text())
+        print("\n↑↑↑↑↑↑↑↑↑↑↑↑METAR↑↑↑↑↑↑↑↑↑↑↑↑\n\n↓↓↓↓↓↓↓↓↓↓↓↓TAF↓↓↓↓↓↓↓↓↓↓↓↓\n")
+        print(taf[0].get_text())
+    else:print("程序结束 Program End")
